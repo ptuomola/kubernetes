@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: main-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: main
+  template:
+    metadata:
+      labels:
+        app: main
+    spec:
+      volumes: 
+        - name: shared-image
+          emptyDir: {}
+      containers:
+        - name: mainwriter
+          image: ptuomola/mainapplication:0.3.0
+          volumeMounts: 
+          - name: shared-image
+            mountPath: /tmp
+        - name: mainreader
+          image: ptuomola/mainreader:0.1.0
+          volumeMounts:
+          - name: shared-image
+            mountPath: /tmp
