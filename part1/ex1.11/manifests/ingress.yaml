@@ -17,7 +17,7 @@ spec:
     - match: Path(`/`)
       kind: Rule
       services:
-        - name: project-svc
+        - name: mainapplication-svc
           kind: Service
-          port: 2347
+          port: 2346
 

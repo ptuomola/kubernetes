@@ -1,26 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mainapplication-dep
+  name: project-dep
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: mainapplication 
+      app: project
   template:
     metadata:
       labels:
-        app: mainapplication
+        app: project
     spec:
       volumes:
-        - name: shared-pingpong
+        - name: shared-project
           persistentVolumeClaim:
-            claimName: pingpong-claim
+            claimName: project-claim
       containers:
-        - name: mainapplication
-          image: ptuomola/mainreader:0.2.0
+        - name: project
+          image: ptuomola/project:0.2.0
           imagePullPolicy: Always
           volumeMounts:
-          - name: shared-pingpong
+          - name: shared-project
             mountPath: /usr/src/app/files
-
