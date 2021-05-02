@@ -1,18 +1,23 @@
-apiVersion: extensions/v1beta1
-kind: Ingress
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
 metadata:
   name: pingpong-ingress
-  annotations: 
-    traefik.ingress.kubernetes.io/rule-type: PathStrip
 spec:
-  rules:
-  - http:
-      paths:
-      - path: /pingpong
-        backend:
-          serviceName: pingpong-svc
-          servicePort: 2347
-      - path: /
-        backend:
-          serviceName: project-svc
-          servicePort: 2347
+  entryPoints: 
+    - web
+  routes:
+    - match: PathPrefix(`/pingpong`)
+      kind: Rule
+      services:
+        - name: pingpong-svc
+          kind: Service
+          port: 2347
+      middlewares:
+        - name: pingpong-stripprefix
+    - match: Path(`/`)
+      kind: Rule
+      services:
+        - name: project-svc
+          kind: Service
+          port: 2347
+
