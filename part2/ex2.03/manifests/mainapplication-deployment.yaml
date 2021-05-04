@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mainapplication-dep
+  namespace: exercises-namespace
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mainapplication 
+  template:
+    metadata:
+      labels:
+        app: mainapplication
+    spec:
+      containers:
+        - name: mainapplication
+          image: ptuomola/mainreader:0.3.0
+          imagePullPolicy: Always
+

@@ -1,0 +1,10 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: pingpong-stripprefix
+  namespace: exercises-namespace
+spec: 
+  stripPrefix:
+    prefixes:
+      - /pingpong
+
