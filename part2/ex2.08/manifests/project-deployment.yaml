@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: project-dep
+  namespace: project-namespace
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: project
+  template:
+    metadata:
+      labels:
+        app: project
+    spec:
+      volumes:
+        - name: shared-project
+          persistentVolumeClaim:
+            claimName: project-claim
+      containers:
+        - name: project
+          image: ptuomola/project:0.5.0
+          imagePullPolicy: Always
+          volumeMounts:
+          - name: shared-project
+            mountPath: /var/tmp/app/files
