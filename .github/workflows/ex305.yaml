@@ -1,4 +1,4 @@
-name: Exercise 3.04
+name: Deleting a branch
 
 on:
   delete:
