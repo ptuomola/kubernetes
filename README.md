@@ -20,4 +20,4 @@ Pros of DIY (and conversely, cons of DBaaS)
 
 # Exercise 3.07: Commitment
 
-Until now I've been using Postgres iwth PersistentVolumeClaims. However, I'll now set up in exercise 3.07, Google Cloud SQL and will use that for the remainder of the exercises. The reason for this is simply to get experience of both. 
+I will keep using Postgres with PersistentVolumeClaims, as I have already gone through the trouble of setting that up - and hence can now benefit from lower costs without additional effort. Also the other benefits of a managed database do not really apply to these exercises, as we will not be storing any data that would be confidential / need to be backed up etc. 
