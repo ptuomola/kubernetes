@@ -59,5 +59,6 @@ jobs:
         ./kustomize edit set image PROJECT/IMAGE=${REPOSITORY}:project-${TAG} BACKEND/IMAGE=${REPOSITORY}:backend-${TAG} POSTGRES_PASSWORD_VALUE=${{ secrets.POSTGRES_PASSWORD }} 
 
         kubectl apply -k .
-        kubectl rollout status deployment backend-dep project-dep
+        kubectl rollout status deployment backend-dep --namespace=project-namespace
+        kubectl rollout status deployment project-dep --namespace=project-namespace
 
