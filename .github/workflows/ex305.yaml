@@ -10,14 +10,11 @@ env:
   ACTIONS_ALLOW_UNSECURE_COMMANDS: true
 
 jobs:
-  build-publish-deploy:
-    name: Build, Publish and Deploy
+  delete-namespace: 
+    name: Delete namespace of deleted branch
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-
     - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
       with:
         service_account_key: ${{ secrets.GKE_SA_KEY }}
@@ -27,5 +24,5 @@ jobs:
 
     - run: gcloud container clusters get-credentials "$GKE_CLUSTER" --zone "$GKE_ZONE"
 
-    - run: kubectl delete namespace ${GITHUB_REF#refs/heads/}
+    - run: kubectl delete namespace ${{ github.event.ref }}
 
