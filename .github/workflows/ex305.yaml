@@ -1,0 +1,31 @@
+name: Exercise 3.04
+
+on:
+  delete:
+
+env:
+  GKE_CLUSTER: dwk-cluster
+  GKE_ZONE: asia-southeast1-b
+  IMAGE: dwk-project
+  ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+
+jobs:
+  build-publish-deploy:
+    name: Build, Publish and Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+      with:
+        service_account_key: ${{ secrets.GKE_SA_KEY }}
+        project_id: ${{ secrets.GKE_PROJECT }}
+
+    - run: gcloud --quiet auth configure-docker
+
+    - run: gcloud container clusters get-credentials "$GKE_CLUSTER" --zone "$GKE_ZONE"
+
+    - run: kubectl delete namespace ${GITHUB_REF#refs/heads/}
+
