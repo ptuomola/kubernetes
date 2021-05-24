@@ -2,6 +2,8 @@ name: Release application
 
 on:
   push:
+    paths:
+      - "./part3/ex3.03/**"
 
 env:
   GKE_CLUSTER: dwk-cluster
