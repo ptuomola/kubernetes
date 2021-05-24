@@ -37,7 +37,7 @@ jobs:
 
     - name: Push project
       working-directory: ./part3/ex3.03/project
-      run: docker push -t ${REPOSITORY}/${TAG}
+      run: docker push ${REPOSITORY}/${TAG}
 
 #    - name: Build backend
 #      working-directory: ./part3/ex3.03/backend
