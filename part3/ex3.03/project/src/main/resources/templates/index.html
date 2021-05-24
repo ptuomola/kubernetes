@@ -1,0 +1,24 @@
+<html>
+    <head>
+        <meta charset="ISO-8859-1" />
+        <title>Project</title>
+        <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+        <meta http-equiv="Pragma" content="no-cache" />
+        <meta http-equiv="Expires" content="0" />
+    </head>
+    <body>
+        <img th:src="@{${dayFileName}}" width="500"/>
+        <p></p>
+        <form action="#" th:action="@{/}" th:object="${formData}" 
+          method="post">
+            <input type="text" maxlength="140" th:field="*{newTodo}"/>
+            <input type="submit" value="Create TODO" />
+        </form>
+        Todos: 
+        <ul>
+            <li th:each="todo : ${todos}">
+                <span th:text="${todo}"> TODO </span>
+            </li>
+        </ul>
+    </body>
+</html>

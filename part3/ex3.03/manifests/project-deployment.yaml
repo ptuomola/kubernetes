@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: project-dep
+  namespace: project-namespace
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: project
+  template:
+    metadata:
+      labels:
+        app: project
+    spec:
+      volumes:
+        - name: shared-project
+          persistentVolumeClaim:
+            claimName: project-claim
+      containers:
+        - name: project
+          image: PROJECT/IMAGE
+          volumeMounts:
+          - name: shared-project
+            mountPath: /var/tmp/app/files
