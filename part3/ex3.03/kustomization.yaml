@@ -2,18 +2,14 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
 - manifests/project-namespace.yaml
-- https://github.com/bitnami-labs/sealed-secrets/releases/download/v0.12.1/controller.yaml
 - manifests/backend-deployment.yaml
 - manifests/persistentvolume.yaml	
-- manifests/postgres-secret.yaml
 - manifests/backend-service.yaml
 - manifests/persistentvolumeclaim.yaml
 - manifests/postgres-service.yaml
 - manifests/ingress.yaml
 - manifests/postgres-deployment.yaml
 - manifests/project-deployment.yaml
-- manifests/job.yaml
-- manifests/postgres-sealedsecret.yaml
 - manifests/project-service.yaml
 images:
 - name: PROJECT/IMAGE

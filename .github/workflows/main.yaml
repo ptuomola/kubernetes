@@ -47,14 +47,16 @@ jobs:
       working-directory: ./part3/ex3.03/backend
       run: docker push ${REPOSITORY}:backend-${TAG}
 
-#    - name: Set up Kustomize
-#      run: |-
-#        curl -sfLo kustomize https://github.com/kubernetes-sigs/kustomize/releases/download/v3.1.0/kustomize_3.1.0_linux_amd64
-#        chmod u+x ./kustomize
+    - name: Set up Kustomize
+      run: |-
+        curl -sfLo kustomize https://github.com/kubernetes-sigs/kustomize/releases/download/v3.1.0/kustomize_3.1.0_linux_amd64
+        chmod u+x ./kustomize
 
-#    - name: Deploy
-#      working-directory: ./part3/ex3.03/
-#      run: |-
-#        ./kustomize edit set image PROJECT/IMAGE=$IMAGE_WITH_TAG-project BACKEND/IMAGE=$IMAGE_WITH_TAG-backend
+    - name: Deploy
+      working-directory: ./part3/ex3.03/
+      run: |-
+        ./kustomize edit set image PROJECT/IMAGE=${REPOSITORY}:project-${TAG} BACKEND/IMAGE=${REPOSITORY}:backend-${TAG} POSTGRES_PASSWORD_VALUE=${{ secrets.POSTGRES_PASSWORD }} 
 
+        kubectl apply -k .
+        kubectl rollout status deployment $IMAGE
 

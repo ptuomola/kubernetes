@@ -17,9 +17,9 @@ spec:
       containers:
         - name: postgres
           image: postgres:13.0
-          envFrom:
-            - secretRef:
-                name: postgres-password
+          env:
+          - name: POSTGRES_PASSWORD
+            value: POSTGRES_PASSWORD_VALUE
           ports:
             - name: postgres
               containerPort: 5432
@@ -31,7 +31,6 @@ spec:
         name: data
       spec:
         accessModes: ["ReadWriteOnce"]
-        storageClassName: local-path
         resources:
           requests:
             storage: 100Mi
