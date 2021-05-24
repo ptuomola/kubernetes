@@ -37,16 +37,15 @@ jobs:
 
     - name: Push project
       working-directory: ./part3/ex3.03/project
-      run: docker push ${REPOSITORY}/${TAG}
+      run: docker push project-${REPOSITORY}/${TAG}
 
-#    - name: Build backend
-#      working-directory: ./part3/ex3.03/backend
-#      run: mvn package
-#      run: docker build --tag "$IMAGE_WITH_TAG-backend" .
+    - name: Build backend
+      working-directory: ./part3/ex3.03/backend
+      run: mvn package -Drepository=${REPOSITORY} -Dtag=backend-${TAG}
 
-#    - name: Publish backend
-#      working-directory: ./part3/ex3.03/backend
-#      run: docker push "$IMAGE_WITH_TAG-backend"
+    - name: Push backend
+      working-directory: ./part3/ex3.03/backend
+      run: docker push backend-${REPOSITORY}/${TAG}
 
 #    - name: Set up Kustomize
 #      run: |-

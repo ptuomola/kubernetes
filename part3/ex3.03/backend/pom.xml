@@ -71,8 +71,11 @@
 	                 </execution>
 	             </executions>
 	             <configuration>
-	             <repository>docker.io/ptuomola/backend</repository>
-	                 <tag>${project.version}</tag>
+                        <repository>${repository}</repository>
+                        <tag>${tag}</tag>
+                        <buildArgs>
+                            <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+                        </buildArgs>
 	             </configuration>
                  <dependencies>
                    <dependency>
