@@ -27,9 +27,9 @@ jobs:
 
     - run: gcloud container clusters get-credentials "$GKE_CLUSTER" --zone "$GKE_ZONE"
 
-    - name: Create image name and tag
-      run: echo "::set-env name=TAG::${GITHUB_REF#refs/heads/}-$GITHUB_SHA"
-      run: echo "::set-env name=IMAGE::gcr.io/${{ secrets.GKE_PROJECT }}/$IMAGE"
+    - run: echo "::set-env name=TAG::${GITHUB_REF#refs/heads/}-$GITHUB_SHA"
+
+    - run: echo "::set-env name=IMAGE::gcr.io/${{ secrets.GKE_PROJECT }}/$IMAGE"
 
     - name: Build project
       working-directory: ./part3/ex3.03/project
