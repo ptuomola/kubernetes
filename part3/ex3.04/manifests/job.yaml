@@ -2,7 +2,6 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: posttodo
-  namespace: project-namespace
 spec:
   schedule: "0 0 * * *" 
   jobTemplate:

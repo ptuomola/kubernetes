@@ -1,0 +1,68 @@
+name: Release application
+
+on:
+  push:
+    paths:
+      - "./part3/ex3.04/**"
+
+env:
+  GKE_CLUSTER: dwk-cluster
+  GKE_ZONE: asia-southeast1-b
+  IMAGE: dwk-project
+  ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+
+jobs:
+  build-publish-deploy:
+    name: Build, Publish and Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+      with:
+        service_account_key: ${{ secrets.GKE_SA_KEY }}
+        project_id: ${{ secrets.GKE_PROJECT }}
+
+    - run: gcloud --quiet auth configure-docker
+
+    - run: gcloud container clusters get-credentials "$GKE_CLUSTER" --zone "$GKE_ZONE"
+
+    - run: echo "::set-env name=TAG::${GITHUB_REF#refs/heads/}-$GITHUB_SHA"
+
+    - run: echo "::set-env name=REPOSITORY::gcr.io/${{ secrets.GKE_PROJECT }}/$IMAGE"
+
+    - name: Build project
+      working-directory: ./part3/ex3.04/project
+      run: mvn package -Drepository=${REPOSITORY} -Dtag=project-${TAG}
+
+    - name: Push project
+      working-directory: ./part3/ex3.04/project
+      run: docker push ${REPOSITORY}:project-${TAG}
+
+    - name: Build backend
+      working-directory: ./part3/ex3.04/backend
+      run: mvn package -Drepository=${REPOSITORY} -Dtag=backend-${TAG}
+
+    - name: Push backend
+      working-directory: ./part3/ex3.04/backend
+      run: docker push ${REPOSITORY}:backend-${TAG}
+
+    - name: Set up Kustomize
+      working-directory: ./part3/ex3.04/
+      run: |-
+        curl -sfLo kustomize https://github.com/kubernetes-sigs/kustomize/releases/download/v3.1.0/kustomize_3.1.0_linux_amd64
+        chmod u+x ./kustomize
+
+    - name: Deploy
+      working-directory: ./part3/ex3.04/
+      run: |-
+        kubectl create namespace ${GITHUB_REF#refs/heads/} || true
+        kubectl config set-context --current --namespace=${GITHUB_REF#refs/heads/}
+        ./kustomise edit set namespace ${GITHUB_REF#refs/heads/}
+        ./kustomize edit set image PROJECT/IMAGE=${REPOSITORY}:project-${TAG} BACKEND/IMAGE=${REPOSITORY}:backend-${TAG} POSTGRES_PASSWORD_VALUE=${{ secrets.POSTGRES_PASSWORD }} 
+        kubectl apply -k .
+        kubectl rollout status deployment backend-dep 
+        kubectl rollout status deployment project-dep
+
