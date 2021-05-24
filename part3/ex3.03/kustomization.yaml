@@ -3,7 +3,6 @@ kind: Kustomization
 resources:
 - manifests/project-namespace.yaml
 - manifests/backend-deployment.yaml
-- manifests/persistentvolume.yaml	
 - manifests/backend-service.yaml
 - manifests/persistentvolumeclaim.yaml
 - manifests/postgres-service.yaml

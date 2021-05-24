@@ -1,4 +1,4 @@
-FROM gcr.io/distroless/java:11
+FROM openjdk
 WORKDIR /app
 ARG JAR_FILE
 COPY target/${JAR_FILE} /app/project.jar
