@@ -7,13 +7,11 @@ spec:
   rules:
   - http:
       paths:
-      - path: /
-        pathType: Prefix
+      - path: /*
         backend:
           serviceName: project-svc
           servicePort: 2347
       - path: /todos
-        pathType: Prefix
         backend:
           serviceName: backend-svc
           servicePort: 2347
