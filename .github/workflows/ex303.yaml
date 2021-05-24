@@ -3,7 +3,7 @@ name: Exercise 3.03
 on:
   push:
     paths:
-      - "./part3/ex3.03/**"
+      - "part3/ex3.03/**"
 
 env:
   GKE_CLUSTER: dwk-cluster
