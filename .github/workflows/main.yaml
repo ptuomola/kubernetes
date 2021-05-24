@@ -33,7 +33,11 @@ jobs:
 
     - name: Build project
       working-directory: ./part3/ex3.03/project
-      run: mvn package dockerfile:push -Drepository=${REPOSITORY} -Dtag=project-${TAG}
+      run: mvn package -Drepository=${REPOSITORY} -Dtag=project-${TAG}
+
+    - name: Push project
+      working-directory: ./part3/ex3.03/project
+      run: docker push -t ${REPOSITORY}/${TAG}
 
 #    - name: Build backend
 #      working-directory: ./part3/ex3.03/backend
