@@ -3,7 +3,6 @@ kind: Kustomization
 resources:
 - manifests/backend-deployment.yaml
 - manifests/backend-service.yaml
-- manifests/persistentvolumeclaim.yaml
 - manifests/postgres-service.yaml
 - manifests/ingress.yaml
 - manifests/postgres-deployment.yaml
