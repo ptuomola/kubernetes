@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mainapplication-dep
+  namespace: exercises-namespace
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mainapplication 
+  template:
+    metadata:
+      labels:
+        app: mainapplication
+    spec:
+      containers:
+        - name: mainapplication
+          image: ptuomola/mainreader:0.5.0
+          imagePullPolicy: Always
+          env:
+            - name: MESSAGE
+              valueFrom: 
+                configMapKeyRef:
+                  name: project-config
+                  key: MESSAGE
+          resources:
+             limits:
+                cpu: 200m
+                memory: 150Mi
+          readinessProbe:
+            initialDelaySeconds: 10 # Initial delay until the readiness is tested
+            periodSeconds: 5 # How often to test
+            httpGet:
+               path: /healthz
+               port: 8080

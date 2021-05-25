@@ -1,0 +1,17 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: pingpong-ing
+  namespace: exercises-namespace
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        backend:
+          serviceName: mainapplication-svc
+          servicePort: 80
+      - path: /pingpong
+        backend: 
+          serviceName: pingpong-svc
+          servicePort: 2347
