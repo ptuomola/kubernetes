@@ -11,6 +11,7 @@ Pros of DBaaS (and conversely, cons of DIY):
 - Automatic storage scaling
 - Easy to set up high availability / replication
 - Easier user interface
+- Risk of lock-in to a specific vendor
 
 Pros of DIY (and conversely, cons of DBaaS)
 
