@@ -8,7 +8,6 @@ resources:
 - manifests/postgres-deployment.yaml
 - manifests/project-deployment.yaml
 - manifests/project-service.yaml
-
 images:
 - name: PROJECT/IMAGE
   newName: ptuomola/project:0.5.0
