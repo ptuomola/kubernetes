@@ -25,12 +25,12 @@ import org.springframework.web.client.RestTemplate;
 @Controller
 public class HelloController {
 
-	// private static String BACKEND_URL = "http://backend-svc:2347/todos";
-	// private static String FILE_PATH = "/var/tmp/app/files";
+	private static String BACKEND_URL = "http://backend-svc:2347/todos";
+	private static String FILE_PATH = "/var/tmp/app/files";
 
 	// For local debugging
-	private static String BACKEND_URL = "http://localhost:8080/todos";
-	private static String FILE_PATH = "/tmp";
+	// private static String BACKEND_URL = "http://localhost:8080/todos";
+	// private static String FILE_PATH = "/tmp";
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String index(Model model) throws IOException {
@@ -78,11 +78,9 @@ public class HelloController {
 		restTemplate.put(BACKEND_URL + "/" + id, null);
 		return "ok";
 	}
-
-
-
 	private List getTodos()
 	{
+		System.out.println("Getting todos from address " + BACKEND_URL);
 		RestTemplate restTemplate = new RestTemplate();
 		ResponseEntity<List> response = restTemplate.getForEntity(BACKEND_URL, List.class);
 		return response.getBody();

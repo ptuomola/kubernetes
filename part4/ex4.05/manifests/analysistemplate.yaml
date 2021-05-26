@@ -10,7 +10,7 @@ spec:
     count: 20
     provider:
       prometheus:
-        address: http://kube-prometheus-stack-1621-prometheus.prometheus.svc.cluster.local:9090 # DNS name for my Prometheus, find yours with kubectl describe svc ...
+        address: http://kube-prometheus-stack-1622-prometheus.prometheus.svc.cluster.local:9090 # DNS name for my Prometheus, find yours with kubectl describe svc ...
         query: |
           scalar(
             sum(container_cpu_usage_seconds_total{namespace="project-namespace"})
