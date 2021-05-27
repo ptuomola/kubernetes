@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: project-ss
+spec:
+  serviceName: project-svc
+  replicas: 1
+  selector:
+    matchLabels:
+      app: project
+  template:
+    metadata:
+      labels:
+        app: project
+    spec:
+      containers:
+        - name: project
+          image: PROJECT/IMAGE
+          imagePullPolicy: Always
+          volumeMounts:
+          - name: shared-project
+            mountPath: /var/tmp/app/files
+          resources:
+            limits:
+              cpu: "150m"
+              memory: "160Mi"
+          readinessProbe:
+            initialDelaySeconds: 90 # Initial delay until the readiness is tested
+            periodSeconds: 10 # How often to test
+            httpGet:
+               path: /healthz
+               port: 8080
+          livenessProbe:
+            initialDelaySeconds: 120 # Initial delay until the liveness is tested
+            periodSeconds: 10 # How often to test
+            httpGet:
+               path: /healthz
+               port: 8080
+  volumeClaimTemplates:
+    - metadata:
+        name: shared-project
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 100Mi
+

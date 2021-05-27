@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="ISO-8859-1" />
+        <title>Project</title>
+        <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+        <meta http-equiv="Pragma" content="no-cache" />
+        <meta http-equiv="Expires" content="0" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    </head>
+    <body>
+        <script>
+            function toggleTodo(str, oldIsDone) {
+                $.ajax({
+                    url: "/todo/" + str, 
+                    type: 'PUT', 
+                }).done(function () {
+                    if(oldIsDone == 'true') {
+                        $("#" + str).replaceWith("<span id=" + str + " class='badge badge-secondary badge-pill'>Not done</span>")
+                    } else {
+                        $("#" + str).replaceWith("<span id=" + str + " class='badge badge-primary badge-pill'>Done</span>")
+                    }
+                }).fail(function (msg) {
+                    alert('FAIL');
+                });
+            }
+        </script>
+
+        <div class="container">
+            <img th:src="@{${dayFileName}}" width="500"/>
+            <p></p>
+            <form action="#" th:action="@{/}" th:object="${formData}" method="post">
+                <input type="text" maxlength="140" th:field="*{newTodo}"/>
+                <input type="submit" value="Create TODO" />
+            </form>
+            <h1>Todos</h1>
+            <ul class="list-group">
+                <div th:each="todo : ${todos}">
+                    <li class="list-group-item d-flex justify-content-between align-items-center" 
+                        th:attr="onclick='toggleTodo(\'' + ${todo.id} + '\', \'' + ${todo.isDone} + '\');'">
+                            <span th:text="${todo.todoText}"> TODO </span>
+                            <div th:if="${todo.isDone} == true"> 
+                                <span th:attr="id=${todo.id}" class="badge badge-primary badge-pill">
+                                    Done
+                                </span>
+                            </div>
+                            <div th:if="${todo.isDone} != true"> 
+                                <span th:attr="id=${todo.id}" class="badge badge-secondary badge-pill">
+                                    Not done
+                                </span>
+                            </div>
+                    </li>
+                </div>
+            </ul>
+        </div>
+
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    </body>
+</html>
