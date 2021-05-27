@@ -14,9 +14,12 @@ resources:
 - manifests/broadcaster-deployment.yaml
 namespace: project-namespace
 images:
-- name: PROJECT/IMAGE
-  newName: ptuomola/project:0.7.0
 - name: BACKEND/IMAGE
-  newName: ptuomola/backend:0.6.0
+  newName: ptuomola/backend
+  newTag: c607c3f43afe4326f897115636a0b05cd09bb0e2
 - name: BROADCASTER/IMAGE
-  newName: ptuomola/broadcaster:0.1.0
+  newName: ptuomola/broadcaster
+  newTag: c607c3f43afe4326f897115636a0b05cd09bb0e2
+- name: PROJECT/IMAGE
+  newName: ptuomola/project
+  newTag: c607c3f43afe4326f897115636a0b05cd09bb0e2
