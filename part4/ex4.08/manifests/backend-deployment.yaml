@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-dep
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: BACKEND/IMAGE
+          imagePullPolicy: Always
+          envFrom:
+            - secretRef:
+                name: postgres-password
+          resources:
+            limits:
+              cpu: "150m"
+              memory: "160Mi"
+          readinessProbe:
+            initialDelaySeconds: 60 # Initial delay until the readiness is tested
+            periodSeconds: 10 # How often to test
+            httpGet:
+               path: /healthz
+               port: 8080
+          livenessProbe:
+            initialDelaySeconds: 90 # Initial delay until the liveness is tested
+            periodSeconds: 10 # How often to test
+            httpGet:
+               path: /healthz
+               port: 8080
