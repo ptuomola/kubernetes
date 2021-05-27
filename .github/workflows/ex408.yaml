@@ -1,0 +1,81 @@
+name: Exercise 4.08
+
+on:
+  push:
+    paths:
+      - 'part4/ex4.08/**'
+      - '.github/workflows/ex408.yaml'
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Build project
+      working-directory: ./part4/ex4.08/project
+      run: mvn package -Drepository=docker.io/ptuomola/project -Dtag=${{ github.sha }}
+
+    - name: Push project
+      uses: docker/build-push-action@v1
+      with: 
+         repository: ptuomola/project
+         username: ${{ secrets.DOCKER_USERNAME }}
+         password: ${{ secrets.DOCKER_PASSWORD }}
+         tags: ${{ github.sha }} 
+         path: part4/ex4.08/project
+
+    - name: Build backend
+      working-directory: ./part4/ex4.08/backend
+      run: mvn package -Drepository=docker.io/ptuomola/backend -Dtag=${{ github.sha }}
+
+    - name: Push backend
+      uses: docker/build-push-action@v1
+      with: 
+         repository: ptuomola/backend
+         username: ${{ secrets.DOCKER_USERNAME }}
+         password: ${{ secrets.DOCKER_PASSWORD }}
+         tags: ${{ github.sha }} 
+         path: part4/ex4.08/backend
+
+    - name: Build broadcaster
+      working-directory: ./part4/ex4.08/broadcaster
+      run: mvn package -Drepository=docker.io/ptuomola/broadcaster -Dtag=${{ github.sha }}
+
+    - name: Push backend
+      uses: docker/build-push-action@v1
+      with: 
+         repository: ptuomola/broadcaster
+         username: ${{ secrets.DOCKER_USERNAME }}
+         password: ${{ secrets.DOCKER_PASSWORD }}
+         tags: ${{ github.sha }} 
+         path: part4/ex4.08/broadcaster
+
+  deploy: 
+    name: Deploy
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Kustomize
+      working-directory: ./part4/ex4.08/
+      run: |-
+        curl -sfLo kustomize https://github.com/kubernetes-sigs/kustomize/releases/download/v3.1.0/kustomize_3.1.0_linux_amd64
+        chmod u+x ./kustomize
+
+    - name: Update yamls
+      working-directory: ./part4/ex4.08/
+      run: |-
+        ./kustomize edit set image PROJECT/IMAGE=ptuomola/project:${{github.sha}} BACKEND/IMAGE=ptuomola/backend:${{github.sha}} BROADCASTER/IMAGE=ptuomola/broadcaster:${{github.sha}}
+
+    # Commit and push
+    - uses: EndBug/add-and-commit@v5
+      with:
+        add: './part4/ex4.08/kustomization.yaml'
+        message: New version release for gitops-app ${{ github.sha }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
