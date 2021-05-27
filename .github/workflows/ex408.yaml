@@ -12,45 +12,36 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+
+    - name: Login to Docker Hub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
     
     - name: Build project
       working-directory: ./part4/ex4.08/project
-      run: mvn -X package dockerfile:push -Drepository=docker.io/ptuomola/project -Dtag=${{ github.sha }} -Ddockerfile.username=${{ secrets.DOCKER_USERNAME }} -Ddockerfile.password='${{ secrets.DOCKER_PASSWORD }}' -Ddockerfile.googleContainerRegistryEnabled=false
+      run: mvn package -Drepository=docker.io/ptuomola/project -Dtag=${{ github.sha }} 
 
     - name: Push project
-      uses: docker/build-push-action@v1
-      with: 
-         repository: ptuomola/project
-         username: ${{ secrets.DOCKER_USERNAME }}
-         password: ${{ secrets.DOCKER_PASSWORD }}
-         tags: ${{ github.sha }} 
-         path: part4/ex4.08/project
+      working-directory: ./part4/ex4.08/project
+      run: docker push ptuomola/project:${{github.sha}}
 
     - name: Build backend
       working-directory: ./part4/ex4.08/backend
       run: mvn -X package -Drepository=docker.io/ptuomola/backend -Dtag=${{ github.sha }}
 
     - name: Push backend
-      uses: docker/build-push-action@v1
-      with: 
-         repository: ptuomola/backend
-         username: ${{ secrets.DOCKER_USERNAME }}
-         password: ${{ secrets.DOCKER_PASSWORD }}
-         tags: ${{ github.sha }} 
-         path: part4/ex4.08/backend
+      working-directory: ./part4/ex4.08/backend
+      run: docker push ptuomola/backend:${{github.sha}}
 
     - name: Build broadcaster
       working-directory: ./part4/ex4.08/broadcaster
       run: mvn package -Drepository=docker.io/ptuomola/broadcaster -Dtag=${{ github.sha }}
 
-    - name: Push backend
-      uses: docker/build-push-action@v1
-      with: 
-         repository: ptuomola/broadcaster
-         username: ${{ secrets.DOCKER_USERNAME }}
-         password: ${{ secrets.DOCKER_PASSWORD }}
-         tags: ${{ github.sha }} 
-         path: part4/ex4.08/broadcaster
+    - name: Push broadcaster
+      working-directory: ./part4/ex4.08/broadcaster
+      run: docker push ptuomola/broadcaster:${{github.sha}}
 
   deploy: 
     name: Deploy
