@@ -15,7 +15,7 @@ jobs:
     
     - name: Build project
       working-directory: ./part4/ex4.08/project
-      run: mvn -X package dockerfile:push -Drepository=docker.io/ptuomola/project -Dtag=${{ github.sha }}
+      run: mvn -X package dockerfile:push -Drepository=docker.io/ptuomola/project -Dtag=${{ github.sha }} -Ddockerfile.username=${{ secrets.DOCKER_USERNAME }} -Ddockerfile.password=${{ secrets.DOCKER_PASSWORD }}
 
     - name: Push project
       uses: docker/build-push-action@v1
