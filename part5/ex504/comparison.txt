@@ -1,0 +1,30 @@
+Rancher vs OpenShift
+--------------------
+
+Having used OpenShift at work - not always a pleasant experience - as well as
+having read through a number of comparison blogs / articles, my preference for
+a new Kubernetes set-up would be Rancher. The key reasons for this are:
+
+- Easier and faster to set-up (OpenShift can be notoriously difficult)
+
+- Alignment with existing open source tools / approaches, rather than vendor
+  specific tools
+
+- Lower licensing costs for a typical set-up
+
+- Tracks upstream component versions more closely 
+
+- Lower degree of vendor lock-in due to use of upstream open source tools /
+  frameworks as-is (not forked / modified versions as with OpenShift)
+
+- Easier to upgrade (at work, we are currently struggling with OCP 4 upgrade)
+
+- Support for public cloud providers is equally good - the additional on-prem
+  architectures supported by OpenShift (Power, Z) are unlikely to be of use in
+  non-specialised use cases 
+
+The only risk I can see with Rancher is about the future of the company behind 
+it: it is clearly much smaller than IBM, and the impact of the recent SUSE 
+acquisition on the future of the product is yet to be seen. But given the 
+low degree of vendor lock-in, the risk introduced by this uncertainty should 
+be manageable. 
