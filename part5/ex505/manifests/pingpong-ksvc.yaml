@@ -1,0 +1,15 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: pingpong-ksvc
+  namespace: exercises-namespace
+spec:
+  template:
+    metadata:
+      name: pingpong-ksvc-v1 # v2
+    spec:
+      containers:
+        - image: ptuomola/pingpong:0.7.0
+          envFrom:
+            - secretRef:
+                name: postgres-password
