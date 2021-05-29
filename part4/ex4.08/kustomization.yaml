@@ -16,10 +16,10 @@ namespace: project-namespace
 images:
 - name: BACKEND/IMAGE
   newName: ptuomola/backend
-  newTag: e511b66d455ab2814b180616142a6bc7eee7454a
+  newTag: d2c64f0b55c69ca308df1d36118450bbd240fe1e
 - name: BROADCASTER/IMAGE
   newName: ptuomola/broadcaster
-  newTag: e511b66d455ab2814b180616142a6bc7eee7454a
+  newTag: d2c64f0b55c69ca308df1d36118450bbd240fe1e
 - name: PROJECT/IMAGE
   newName: ptuomola/project
-  newTag: e511b66d455ab2814b180616142a6bc7eee7454a
+  newTag: d2c64f0b55c69ca308df1d36118450bbd240fe1e
