@@ -1,0 +1,185 @@
+apiVersion: v1
+items:
+- apiVersion: apps/v1
+  kind: StatefulSet
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"StatefulSet","metadata":{"annotations":{},"generation":1,"labels":{"kustomize.toolkit.fluxcd.io/checksum":"0011a6f8b1ac4b49fe476e78ab35f27e4fa445d1","kustomize.toolkit.fluxcd.io/name":"project-app","kustomize.toolkit.fluxcd.io/namespace":"flux-system"},"name":"postgres-ss","namespace":"project-namespace","resourceVersion":"6508","uid":"52d2658d-0b8d-4f77-8e32-9d3df0024828"},"spec":{"podManagementPolicy":"OrderedReady","replicas":1,"revisionHistoryLimit":10,"selector":{"matchLabels":{"app":"postgres"}},"serviceName":"postgres-svc","template":{"metadata":{"annotations":{"linkerd.io/inject":"enabled"},"labels":{"app":"postgres"}},"spec":{"containers":[{"envFrom":[{"secretRef":{"name":"postgres-password"}}],"image":"postgres:13.0","imagePullPolicy":"IfNotPresent","name":"postgres","ports":[{"containerPort":5432,"name":"postgres","protocol":"TCP"}],"resources":{"limits":{"cpu":"100m","memory":"128Mi"}},"terminationMessagePath":"/dev/termination-log","terminationMessagePolicy":"File","volumeMounts":[{"mountPath":"/var/lib/postgresql/data","name":"data","subPath":"postgres"}]}],"dnsPolicy":"ClusterFirst","restartPolicy":"Always","schedulerName":"default-scheduler","securityContext":{},"terminationGracePeriodSeconds":30}},"updateStrategy":{"rollingUpdate":{"partition":0},"type":"RollingUpdate"},"volumeClaimTemplates":[{"apiVersion":"v1","kind":"PersistentVolumeClaim","metadata":{"name":"data"},"spec":{"accessModes":["ReadWriteOnce"],"resources":{"requests":{"storage":"100Mi"}},"volumeMode":"Filesystem"},"status":{"phase":"Pending"}}]},"status":{"collisionCount":0,"currentReplicas":1,"currentRevision":"postgres-ss-bffbfcf8b","observedGeneration":1,"readyReplicas":1,"replicas":1,"updateRevision":"postgres-ss-bffbfcf8b","updatedReplicas":1}}
+    generation: 2
+    labels:
+      kustomize.toolkit.fluxcd.io/checksum: 0011a6f8b1ac4b49fe476e78ab35f27e4fa445d1
+      kustomize.toolkit.fluxcd.io/name: project-app
+      kustomize.toolkit.fluxcd.io/namespace: flux-system
+    name: postgres-ss
+    namespace: project-namespace
+    resourceVersion: "10010"
+    uid: 52d2658d-0b8d-4f77-8e32-9d3df0024828
+  spec:
+    podManagementPolicy: OrderedReady
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: postgres
+    serviceName: postgres-svc
+    template:
+      metadata:
+        annotations:
+          config.linkerd.io/skip-outbound-ports: "4222"
+          linkerd.io/inject: enabled
+        labels:
+          app: postgres
+      spec:
+        containers:
+        - envFrom:
+          - secretRef:
+              name: postgres-password
+          image: postgres:13.0
+          imagePullPolicy: IfNotPresent
+          name: postgres
+          ports:
+          - containerPort: 5432
+            name: postgres
+            protocol: TCP
+          resources:
+            limits:
+              cpu: 100m
+              memory: 128Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /var/lib/postgresql/data
+            name: data
+            subPath: postgres
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+    updateStrategy:
+      rollingUpdate:
+        partition: 0
+      type: RollingUpdate
+    volumeClaimTemplates:
+    - apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        name: data
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 100Mi
+        volumeMode: Filesystem
+      status:
+        phase: Pending
+  status:
+    collisionCount: 0
+    currentReplicas: 1
+    currentRevision: postgres-ss-7bf9b8bbd
+    observedGeneration: 2
+    readyReplicas: 1
+    replicas: 1
+    updateRevision: postgres-ss-7bf9b8bbd
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: StatefulSet
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"StatefulSet","metadata":{"annotations":{},"generation":1,"labels":{"kustomize.toolkit.fluxcd.io/checksum":"0011a6f8b1ac4b49fe476e78ab35f27e4fa445d1","kustomize.toolkit.fluxcd.io/name":"project-app","kustomize.toolkit.fluxcd.io/namespace":"flux-system"},"name":"project-ss","namespace":"project-namespace","resourceVersion":"6962","uid":"f3da721f-beaa-4581-9d6a-8efb1338fbb7"},"spec":{"podManagementPolicy":"OrderedReady","replicas":1,"revisionHistoryLimit":10,"selector":{"matchLabels":{"app":"project"}},"serviceName":"project-svc","template":{"metadata":{"annotations":{"linkerd.io/inject":"enabled"},"labels":{"app":"project"}},"spec":{"containers":[{"image":"ptuomola/project:e511b66d455ab2814b180616142a6bc7eee7454a","imagePullPolicy":"Always","livenessProbe":{"failureThreshold":3,"httpGet":{"path":"/healthz","port":8080,"scheme":"HTTP"},"initialDelaySeconds":120,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":1},"name":"project","readinessProbe":{"failureThreshold":3,"httpGet":{"path":"/healthz","port":8080,"scheme":"HTTP"},"initialDelaySeconds":90,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":1},"resources":{"limits":{"cpu":"150m","memory":"160Mi"}},"terminationMessagePath":"/dev/termination-log","terminationMessagePolicy":"File","volumeMounts":[{"mountPath":"/var/tmp/app/files","name":"shared-project"}]}],"dnsPolicy":"ClusterFirst","restartPolicy":"Always","schedulerName":"default-scheduler","securityContext":{},"terminationGracePeriodSeconds":30}},"updateStrategy":{"rollingUpdate":{"partition":0},"type":"RollingUpdate"},"volumeClaimTemplates":[{"apiVersion":"v1","kind":"PersistentVolumeClaim","metadata":{"name":"shared-project"},"spec":{"accessModes":["ReadWriteOnce"],"resources":{"requests":{"storage":"100Mi"}},"volumeMode":"Filesystem"},"status":{"phase":"Pending"}}]},"status":{"collisionCount":0,"currentReplicas":1,"currentRevision":"project-ss-79c8d556b8","observedGeneration":1,"readyReplicas":1,"replicas":1,"updateRevision":"project-ss-79c8d556b8","updatedReplicas":1}}
+    generation: 2
+    labels:
+      kustomize.toolkit.fluxcd.io/checksum: 0011a6f8b1ac4b49fe476e78ab35f27e4fa445d1
+      kustomize.toolkit.fluxcd.io/name: project-app
+      kustomize.toolkit.fluxcd.io/namespace: flux-system
+    name: project-ss
+    namespace: project-namespace
+    resourceVersion: "11408"
+    uid: f3da721f-beaa-4581-9d6a-8efb1338fbb7
+  spec:
+    podManagementPolicy: OrderedReady
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: project
+    serviceName: project-svc
+    template:
+      metadata:
+        annotations:
+          config.linkerd.io/skip-outbound-ports: "4222"
+          linkerd.io/inject: enabled
+        labels:
+          app: project
+      spec:
+        containers:
+        - image: ptuomola/project:e511b66d455ab2814b180616142a6bc7eee7454a
+          imagePullPolicy: Always
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /healthz
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 120
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          name: project
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /healthz
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 90
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources:
+            limits:
+              cpu: 150m
+              memory: 160Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /var/tmp/app/files
+            name: shared-project
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+    updateStrategy:
+      rollingUpdate:
+        partition: 0
+      type: RollingUpdate
+    volumeClaimTemplates:
+    - apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        name: shared-project
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 100Mi
+        volumeMode: Filesystem
+      status:
+        phase: Pending
+  status:
+    collisionCount: 0
+    currentReplicas: 1
+    currentRevision: project-ss-66d7c868c8
+    observedGeneration: 2
+    readyReplicas: 1
+    replicas: 1
+    updateRevision: project-ss-66d7c868c8
+    updatedReplicas: 1
+kind: List
+metadata: {}
+---
